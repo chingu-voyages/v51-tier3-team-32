@@ -36,6 +36,7 @@ coding!
 
 - Nadeem : [GitHub](https://github.com/707) 
 - Mariana Farcas: [GitHub](https://github.com/MarianaFarcas) / [LinkedIn](http://linkedin.com/in/mariana-f-6592661b5)
+- Offiong Francis: [GitHub](https://github.com/ELFrancisco4) / [LinkedIn](https://www.linkedin.com/in/francis-offiong-aa032120a/)
 
    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
