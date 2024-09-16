@@ -1,5 +1,5 @@
-const { generateToken } = require('../../config/jwt');
-const User = require('../models/User');
+const { generateToken } = require('../config/jwt.js');
+const { User } = require('../models');
 
 const createUser = async (email, name) => {
   try {
@@ -20,7 +20,7 @@ const createUser = async (email, name) => {
       return { user, token };
     }
   } catch (error) {
-    console.error('Error finding user:', error);
+    throw new Error(error.message);
   }
 };
 

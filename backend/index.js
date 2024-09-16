@@ -2,23 +2,28 @@ const express = require("express");
 const app = express();
 require('dotenv').config();
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const db = require('./src/models');
-const { oauthGoogle, oauthGoogleCallback } = require("./src/controllers/auth/oauth.controller");
+const authRoutes = require('./src/routes/authRoutes');
 
-
-app.use(express.json());
-app.use(cors());
-
+app.use(cors({
+  credentials: true,
+  origin: [process.env.FRONTEND_URL, 'google.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+}));
 
 
 const PORT = process.env.PORT || "4000";
+
+app.use(express.json());
+app.use(cookieParser());
 
 app.get("/test", (req, res) => {
   res.send("ok");
 });
 
-app.get('/auth/google', oauthGoogle);
-app.get('/auth/google/callback', oauthGoogleCallback);
+app.use('/auth', authRoutes);
 // subsequent requests will require jwt token
 
 

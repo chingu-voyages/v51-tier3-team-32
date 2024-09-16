@@ -30,11 +30,14 @@ const oauthGoogleCallback = async (req, res) => {
     });
     
     const { user, token} = await createUser(profile?.email, profile?.name);
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "None" });
+    // redirect to home page with token
+    // set cookie with token
 
-    res.status(201).json({ user, token });
+    res.redirect(process.env.NODE_ENV === "production" ? 'https://funshare.vercel.app/' : 'http://localhost:5001/');
   } catch (error) {
     console.error('Error:', error);
-    res.redirect('/login');
+    res.redirect('http://localhost:3000/login');
   }
 }
 
