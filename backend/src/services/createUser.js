@@ -1,26 +1,25 @@
 const { generateToken } = require('../config/jwt.js');
-const { User } = require('../models');
+const db = require('../models');
 
 const createUser = async (email, name) => {
+  let user;
   try {
-    const user = await User.findOne({
+     user = await db.User.findOne({
       where: { email: email }
     });
 
-    if (user) {
-      return user
-    } else {
-      const user = await User.create({
+    if (!user) {
+      user = await db.User.create({
         email,
         name
       });
+    } 
+    const token = generateToken(user.email);
 
-      const token = generateToken(user.id);
+    return { user, token };
 
-      return { user, token };
-    }
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 

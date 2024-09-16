@@ -32,6 +32,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  User.associate = (models) => {
+    User.hasMany(models.Group, {
+      foreignKey: 'ownerId',
+      as: 'groups',
+    });
+  }
+
   return User;
 };
 

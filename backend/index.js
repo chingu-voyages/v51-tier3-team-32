@@ -5,6 +5,8 @@ const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const db = require('./src/models');
 const authRoutes = require('./src/routes/authRoutes');
+const groupRoutes = require('./src/routes/groupRoutes');
+const { authenticateUser } = require("./src/middlewares/authenticateUser");
 
 app.use(cors({
   credentials: true,
@@ -24,7 +26,7 @@ app.get("/test", (req, res) => {
 });
 
 app.use('/auth', authRoutes);
-// subsequent requests will require jwt token
+app.use('/groups', authenticateUser, groupRoutes);
 
 
 db.sequelize.sync().then(() => {
