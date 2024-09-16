@@ -19,7 +19,7 @@ const createUser = async (email, name) => {
     return { user, token };
 
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
