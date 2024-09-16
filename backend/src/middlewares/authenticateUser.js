@@ -1,16 +1,22 @@
 const { verifyToken } = require('../config/jwt');
-const User = require('../models/User');
+const db = require('../models');
 
-const authenticateUser = (req, res, next) => {
-  const token = req.headers.authorization;
+const authenticateUser = async (req, res, next) => {
+  const token = req.cookies.token;
+ 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
   const decodedToken = verifyToken(token);
-  // find user by email
-  // else return error
+  const user = await db.User.findOne({
+    where: { email: decodedToken }
+  });
 
+  if (user) {
+    req.user = user;
+  }
+  
   next();
 }
 

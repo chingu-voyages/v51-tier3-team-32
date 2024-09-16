@@ -1,6 +1,3 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../../config/database');
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: {
@@ -34,6 +31,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
     },
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.Group, {
+      foreignKey: 'ownerId',
+      as: 'groups',
+    });
+  }
 
   return User;
 };

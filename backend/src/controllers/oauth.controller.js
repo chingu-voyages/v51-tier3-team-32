@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { createUser } = require('../../services/createUser');
+const { createUser } = require('../services/createUser');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -10,7 +10,7 @@ const oauthGoogle = async (req, res) => {
   res.redirect(url);
 }
 
-const oauthGoogleCallback = async (req, res) => {
+const oauthGoogleCallback = async (req, res, next) => {
   const { code } = req.query;
 
   try {
@@ -29,12 +29,16 @@ const oauthGoogleCallback = async (req, res) => {
       headers: { Authorization: `Bearer ${access_token}` },
     });
     
-    const { user, token} = await createUser(profile?.email, profile?.name);
+    const {token} = await createUser(profile?.email, profile?.name);
+  
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "None" });
+    // redirect to home page with token
+    // set cookie with token
 
-    res.status(201).json({ user, token });
+    res.redirect(process.env.NODE_ENV === "production" ? 'https://funshare.vercel.app/' : 'http://localhost:3000/');
   } catch (error) {
     console.error('Error:', error);
-    res.redirect('/login');
+    res.redirect('http://localhost:3000/login');
   }
 }
 
