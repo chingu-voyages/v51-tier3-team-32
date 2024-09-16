@@ -42,7 +42,22 @@ const oauthGoogleCallback = async (req, res, next) => {
   }
 }
 
+// Logout function
+const logout = async (req, res) => {
+  try {
+    // Clear cookies or client-side tokens
+    res.clearCookie('token'); // Clear the token cookie (if using cookies)
+    
+    // Optionally, send a message to the client to remove tokens stored in local storage
+    res.status(200).json({ message: 'Hey, You Logged out successfully. we are sad to see you go' });
+  } catch (error) {
+    console.error('Logout Error:', error);
+    res.status(500).json({ message: 'opps, Logout failed' });
+  }
+}
+
 module.exports = {
   oauthGoogle,
-  oauthGoogleCallback
+  oauthGoogleCallback,
+  logout,
 }
