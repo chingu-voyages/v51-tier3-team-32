@@ -1,8 +1,9 @@
-# voyage-tasks
+# Funsplit
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+An expenses splitting app
+
+From casual dinners to group vacations or birthday parties, splitting expenses has always been a part of our social interactions. Over time, the need for an efficient and fair way to manage shared costs has grown, especially in our increasingly interconnected world.
+
 
 If you are unsure of what should go into the `readme` let this article,
 written by an experienced Chingu, be your starting point - 
@@ -37,6 +38,7 @@ coding!
 - Nadeem : [GitHub](https://github.com/707) 
 - Mariana Farcas: [GitHub](https://github.com/MarianaFarcas) / [LinkedIn](http://linkedin.com/in/mariana-f-6592661b5)
 - Offiong Francis: [GitHub](https://github.com/ELFrancisco4) / [LinkedIn](https://www.linkedin.com/in/francis-offiong-aa032120a/)
+- Debbie Thompson: [GitHub](https://github.com/debbiect246) /  [LinkedIn](https://linkedin.com/in/debbie-thompson-1baa4733)
 
    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
