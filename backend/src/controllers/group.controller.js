@@ -58,7 +58,46 @@ const myGroups = async (req, res) => {
   }
 };
 
+// Delete a group by ID
+
+const deleteGroup = async (req, res)=> {
+  try{
+    const {groupId} = req.params;
+    const  user = req.user;
+    const group = await db.Group.findOne({
+      where: {
+        id: groupId,
+        ownerId: user.id,
+      }
+      
+    });
+
+    if(!group){
+      return res.status(404).json({
+        status: 'error',
+        message: 'Group not found or you do not have permission to delete it',
+      });
+    }
+
+    await group.destroy();
+
+    res.status(200).json({
+      status: 'success',
+      message: "Group deleted successfully",
+    });
+
+  }catch(error){
+    console.error('Error:', error);
+
+    res.status(500).json({
+      status: 'error',
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   createGroup,
-  myGroups
+  myGroups,
+  deleteGroup // Export the new deleteGroup function
 };
