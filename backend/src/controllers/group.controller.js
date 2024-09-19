@@ -58,7 +58,26 @@ const myGroups = async (req, res) => {
   }
 };
 
+const deleteGroup = async (req, res) => { 
+  try {
+    await db.Group.destroy({
+      where: {
+        id: req.params.id,
+      }
+    })
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
 module.exports = {
   createGroup,
-  myGroups
+  myGroups,
+  deleteGroup
 };
