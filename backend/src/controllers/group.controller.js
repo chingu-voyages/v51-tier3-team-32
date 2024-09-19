@@ -58,6 +58,27 @@ const myGroups = async (req, res) => {
   }
 };
 
+const editGroup = async (req, res) => { 
+  const updatedData = req.body;
+  const id = req.params.id;
+
+  try {
+    await db.Group.update(updatedData, {
+      where: {
+        id: id  
+      }
+    })
+
+    res.status(200).json({message: "Group successfully updated"});
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
 const deleteGroup = async (req, res) => { 
   try {
     await db.Group.destroy({
@@ -79,5 +100,6 @@ const deleteGroup = async (req, res) => {
 module.exports = {
   createGroup,
   myGroups,
+  editGroup,
   deleteGroup
 };
