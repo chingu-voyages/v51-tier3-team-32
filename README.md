@@ -41,4 +41,4 @@ coding!
 - Debbie Thompson: [GitHub](https://github.com/debbiect246) /  [LinkedIn](https://linkedin.com/in/debbie-thompson-1baa4733)
 
    ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Igwe Samuel: [GitHub](https://github.com/frugalcodes) / [LinkedIn](https://www.linkedin.com/in/samuel-igwe-031152226/)
