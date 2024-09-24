@@ -58,46 +58,57 @@ const myGroups = async (req, res) => {
   }
 };
 
+
 // Delete a group by ID
 
-const deleteGroup = async (req, res)=> {
-  try{
-    const {groupId} = req.params;
-    const  user = req.user;
-    const group = await db.Group.findOne({
+const deleteGroup = async (req, res) => { 
+  try {
+    await db.Group.destroy({
       where: {
-        id: groupId,
-        ownerId: user.id,
+        id: req.params.id,
       }
-      
     });
 
-    if(!group){
-      return res.status(404).json({
-        status: 'error',
-        message: 'Group not found or you do not have permission to delete it',
-      });
-    }
-
-    await group.destroy();
-
-    res.status(200).json({
-      status: 'success',
-      message: "Group deleted successfully",
-    });
-
-  }catch(error){
+    res.status(204).send();
+  } catch (error) {
     console.error('Error:', error);
-
     res.status(500).json({
       status: 'error',
-      message: "Internal Server Error",
+      message: 'Internal Server Error',
     });
   }
 };
 
+
+const editGroup = async (req, res) => { 
+  const updatedData = req.body;
+  const id = req.params.id;
+
+  try {
+    await db.Group.update(updatedData, {
+      where: {
+        id: id  
+      }
+    })
+
+    res.status(200).json({message: "Group successfully updated"});
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+
+
 module.exports = {
   createGroup,
   myGroups,
-  deleteGroup // Export the new deleteGroup function
+
+  deleteGroup, // Export the new deleteGroup function
+
+  editGroup
+
 };
