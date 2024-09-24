@@ -5,7 +5,9 @@ const { isGroupOwner } = require("../middlewares/isGroupOwner");
 
 router.post('/', createGroup);
 router.get('/', myGroups);
+
 router.put('/:id', editGroup);
 router.delete('/:id', isGroupOwner, deleteGroup);
+
 
 module.exports = router;
