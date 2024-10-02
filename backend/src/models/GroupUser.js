@@ -7,26 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
+    }
+  },
+  {
+    timestamps: true,
   });
-
-  GroupUser.associate = (models) => {
-    GroupUser.hasMany(models.User, {
-      foreignKey: 'userId',
-    });
-
-    GroupUser.hasMany(models.Group, {
-      foreignKey: 'groupId',
-    });
-  }
 
   return Group;
 };

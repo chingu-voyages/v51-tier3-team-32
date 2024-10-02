@@ -21,22 +21,20 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Must be a valid email address."
           }
       },
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-  });
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
 
   User.associate = (models) => {
     User.hasMany(models.Group, {
       foreignKey: 'ownerId',
       as: 'groups',
     });
+
+    User.belongsToMany(models.Group, {through: 'GroupUser'});
   }
 
   return User;
