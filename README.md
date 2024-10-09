@@ -16,6 +16,10 @@ in your `readme` feel free to replace the text we've provided here.
 
 ## Team Documents
 
+Insert figma images.
+Insert screen flow diagram.
+Insert link to jira board.
+
 You may find these helpful as you work together to organize your project.
 
 - [Team Project Ideas](./docs/team_project_ideas.md)
