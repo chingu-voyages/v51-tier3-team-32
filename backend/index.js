@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./src/models');
 const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
+const expenseRoutes = require('./src/routes/expenseRoutes');
 const { authenticateUser } = require("./src/middlewares/authenticateUser");
 
 app.use(cors({
@@ -27,6 +28,7 @@ app.get("/test", (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/groups', authenticateUser, groupRoutes);
+app.use('/expenses', authenticateUser, expenseRoutes);
 
 
 db.sequelize.sync().then(() => {
