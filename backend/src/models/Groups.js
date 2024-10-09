@@ -3,10 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: {
-        args: true,
-        msg: "Group name already exist.",
-      },
     },
     description: {
       type: DataTypes.STRING,
@@ -24,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   Group.associate = (models) => {
     Group.belongsTo(models.User, {
       foreignKey: 'ownerId',
+      onDelete: 'CASCADE',
+    });
+
+    Group.hasMany(models.Expense, {
       onDelete: 'CASCADE',
     });
 

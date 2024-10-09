@@ -2,11 +2,13 @@ module.exports = (sequelize, DataTypes) => {
   const Expense = sequelize.define('Expense', {
     amount: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
       allowNull: false,
     },
-    groupId: {
-      type: DataTypes.INTEGER,
+    settled: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false,
     },
   },
   {
@@ -18,10 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'expenseId',
       onDelete: 'CASCADE',
     });
-
-    Expense.belongsToMany(models.User, {through: 'ExpenseUser'});
+    Expense.belongsToMany(models.User, {through: 'ExpenseUserSplit'});
   }
 
   return Expense;
 };
-

@@ -13,13 +13,14 @@ const authenticateUser = async (req, res, next) => {
     where: { email: decodedToken }
   });
 
-  if (user) {
-    req.user = user;
+  if (!user) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
-  
+  req.user = user;
+
   next();
 }
 
 module.exports = {
-  authenticateUser,
+  authenticateUser
 };
