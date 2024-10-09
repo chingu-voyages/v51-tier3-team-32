@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const db = require("../models");
 
 const createGroup = async (req, res) => { 
@@ -9,6 +10,8 @@ const createGroup = async (req, res) => {
       description,
       ownerId: user.id,
     });
+
+    await group.addUsers(user);
 
     res.status(201).json({
       status: 'success',
@@ -102,15 +105,11 @@ const editGroup = async (req, res) => {
 };
 
 const joinGroup = async (req, res) => { 
-  const groupId = req.params.id;
-  const userId = req.user.id
-
   try {
-    await db.GroupUser.create({groupId, userId}, {
-      where: {
-        groupId  
-      }
-    })
+    const user = req.user;
+    const group = await db.Group.findOne({where: { id: req.params.id}});
+
+    await group.addUsers(user);
 
     res.status(200).json({message: "Group member joined successfully"});
   } catch (error) {
@@ -123,15 +122,11 @@ const joinGroup = async (req, res) => {
 };
 
 const addMember = async (req, res) => { 
-  const groupId = req.params.id;
-  const userId = req.body.userId;
-
   try {
-    await db.GroupUser.create({groupId, userId}, {
-      where: {
-        groupId  
-      }
-    })
+    const user = await db.User.findOne({where: { email: req.body.email}});
+    const group = await db.Group.findOne({where: { id: req.params.id}});
+
+    await group.addUsers(user);
 
     res.status(200).json({message: "Group member added successfully"});
   } catch (error) {
@@ -144,15 +139,10 @@ const addMember = async (req, res) => {
 };
 
 const deleteMember = async (req, res) => { 
-  const groupId = req.params.id;
-  const userId = req.body.userId;
   try {
-    await db.GrouUser.destroy({
-      where: {
-        userId,
-        groupId
-      }
-    });
+    const user = await db.User.findOne({where: { email: req.body.email}});
+    const group = await db.Group.findOne({where: { id: req.params.id}});
+    await group.removeUsers(user);
 
     res.status(204).send();
   } catch (error) {
@@ -164,7 +154,44 @@ const deleteMember = async (req, res) => {
   }
 };
 
+const groupMembers = async (req, res) => { 
+  let members;
 
+  try {
+    const group = await db.Group.findOne({where: { id: req.params.id}});
+    if (group) {
+      members = await group.getUsers();
+    }
+
+    res.status(200).send(members || []);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+const getGroup = async (req, res) => {
+
+  const groupId = req.params.id;
+  try {
+    const group = await db.Group.findOne({
+      where: {
+        id: groupId
+      }
+    });
+
+    res.status(200).send(group);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
 
 module.exports = {
   createGroup,
@@ -174,4 +201,6 @@ module.exports = {
   joinGroup,
   addMember,
   deleteMember,
+  getGroup,
+  groupMembers,
 };

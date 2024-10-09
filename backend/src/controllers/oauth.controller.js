@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { createUser } = require('../services/createUser');
+const db = require('../models');
+const { generateToken } = require('../config/jwt');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -56,8 +58,24 @@ const logout = async (req, res) => {
   }
 }
 
+
+const getAuthToken = async (req, res) => {
+  try {
+     user = await db.User.findOne({
+      where: { email: req.body.email }
+    });
+
+    const token = generateToken(user.email);
+
+    res.status(200).send({ user, token });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 module.exports = {
   oauthGoogle,
   oauthGoogleCallback,
   logout,
+  getAuthToken,
 }

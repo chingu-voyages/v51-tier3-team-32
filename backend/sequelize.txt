@@ -1,0 +1,87 @@
+// const { DataTypes } = require("sequelize");
+// const { sequelize } = require("./src/models");
+
+Model.bulkCreate([
+  { name: 'John Doe', isBetaMember: false },
+])
+
+
+Country.setCapital(capital);
+Country.getCapital(); 
+country.createCapital( { } );
+
+// one to one
+
+Country.hasOne(Capital); //oprional { foreignKey: 'countryId' }, {onDelete: 'CASCADE'} // deleting a country should delete foreign keys
+Capital.belongsTo(Country);
+
+
+// one to many
+
+const User = sequelize.define('user', { 
+  name: DataTypes.STRING
+});
+
+const Post = sequelize.define('post', {
+  title: DataTypes.STRING
+});
+
+User.hasMany(Post);
+Post.belongsTo(User);
+
+sequelize.sync({alter: true}).then(() => {
+
+}).catch((err) => {
+
+});
+
+//Post = id, message, userId
+//User = id, name
+user.addPosts(posts);
+user.countPosts();
+Post.findOne();
+user.removePost(posts);
+// { onDelete: 'CASCADE' } // deleting a user should delete all posts
+
+posts.setUser(user);
+
+
+// many to many
+
+const Customer = sequelize.define('customer', {
+  name: DataTypes.STRING
+});
+
+const Product = sequelize.define('product', {
+  productName: DataTypes.STRING
+});
+
+Customer.belongsToMany(Product, { through: 'CustomerProduct' });
+Product.belongsToMany(Customer, { through: 'CustomerProduct' });
+
+// CustomerProduct automatically created
+// custom foreign key, { foreignKey: 'customerId' }
+
+// create CustomerProduct to set customizations
+
+const CustomerProduct = sequelize.define('CustomerProduct', {
+  customerproductId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }
+}, {
+  timestamps: false
+});
+
+// updated
+Customer.belongsToMany(Product, { through: CustomerProduct });
+Product.belongsToMany(Customer, { through: CustomerProduct });
+
+// creating related records
+
+customer.addProducts(products);
+production.addCustomers(customer);
+
+// default for onDelete/onUpdate for one-to-one is 'SET_NULL'
+// default for onDelete/onUpdate for many-to-many is 'CASCADE'

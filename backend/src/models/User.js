@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.belongsToMany(models.Group, {through: 'GroupUser'});
-    User.belongsToMany(models.Expense, {through: 'ExpenseUser'});
+    User.belongsToMany(models.Expense, {through: 'ExpenseUserSplit'});
   }
 
   return User;
