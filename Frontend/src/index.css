@@ -67,3 +67,118 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.container {
+  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+.logout-btn {
+  background-color: #ff4b5c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #ff0000;
+}
+
+.main-content {
+  display: flex;
+  margin-top: 20px;
+}
+
+.sidebar {
+  flex: 1;
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+}
+
+.sidebar li:hover {
+  background-color: #d6d8db;
+}
+
+.content {
+  flex: 3;
+  padding: 20px;
+}
+
+.group-form, .expense-form {
+  background-color: #f1f1f1;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input, textarea {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.expense-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.expense-list li {
+  padding: 10px;
+  background-color: #e9ecef;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+}
