@@ -101,14 +101,77 @@ const editGroup = async (req, res) => {
   }
 };
 
+const joinGroup = async (req, res) => { 
+  const groupId = req.params.id;
+  const userId = req.user.id
+
+  try {
+    await db.GroupUser.create({groupId, userId}, {
+      where: {
+        groupId  
+      }
+    })
+
+    res.status(200).json({message: "Group member joined successfully"});
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+const addMember = async (req, res) => { 
+  const groupId = req.params.id;
+  const userId = req.body.userId;
+
+  try {
+    await db.GroupUser.create({groupId, userId}, {
+      where: {
+        groupId  
+      }
+    })
+
+    res.status(200).json({message: "Group member added successfully"});
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+const deleteMember = async (req, res) => { 
+  const groupId = req.params.id;
+  const userId = req.body.userId;
+  try {
+    await db.GrouUser.destroy({
+      where: {
+        userId,
+        groupId
+      }
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
 
 
 module.exports = {
   createGroup,
   myGroups,
-
-  deleteGroup, // Export the new deleteGroup function
-
-  editGroup
-
+  deleteGroup,
+  editGroup,
+  joinGroup,
+  addMember,
+  deleteMember,
 };
