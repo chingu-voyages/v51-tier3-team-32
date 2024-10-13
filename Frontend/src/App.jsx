@@ -1,166 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterPage";
+import Logout from "./components/Logout";
 
-const LandingPage = () => {
-  const [userName, setUserName] = useState('John Doe'); // Placeholder user
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [registeredUsers, setRegisteredUsers] = useState([]); // Store registered users
+  const [loggedInUser, setLoggedInUser] = useState(null); // Track the current logged in user
   const [groups, setGroups] = useState([]);
-  const [groupName, setGroupName] = useState('');
-  const [groupBudget, setGroupBudget] = useState('');
-  const [groupNotes, setGroupNotes] = useState('');
-  const [currentGroup, setCurrentGroup] = useState(null);
-  const [groupExpenses, setGroupExpenses] = useState([]);
-  const [user, setUser] = useState('');
-  const [expenseType, setExpenseType] = useState('');
-  const [amount, setAmount] = useState('');
 
-  const addGroup = (e) => {
-    e.preventDefault();
-    const newGroup = {
-      groupName,
-      groupBudget: parseFloat(groupBudget),
-      groupNotes,
-      expenses: []
-    };
-    setGroups([...groups, newGroup]);
-    setGroupName('');
-    setGroupBudget('');
-    setGroupNotes('');
+  const handleLogin = (username, password) => {
+    const user = registeredUsers.find(user => user.username === username && user.password === password);
+    if (user) {
+      setIsAuthenticated(true);
+      setLoggedInUser(user.username);
+    } else {
+      alert("Invalid username or password.");
+    }
   };
 
-  const selectGroup = (group) => {
-    setCurrentGroup(group);
-    setGroupExpenses(group.expenses);
-  };
-
-  const addExpense = (e) => {
-    e.preventDefault();
-    const newExpense = { user, expenseType, amount: parseFloat(amount) };
-    const updatedGroup = { ...currentGroup, expenses: [...currentGroup.expenses, newExpense] };
-    
-    setGroupExpenses(updatedGroup.expenses);
-    setGroups(groups.map(group => group === currentGroup ? updatedGroup : group));
-    
-    setUser('');
-    setExpenseType('');
-    setAmount('');
-  };
-
-  const logout = () => {
-    // handle logout logic here
-    console.log('User logged out');
+  const handleRegister = (username, password) => {
+    const userExists = registeredUsers.some(user => user.username === username);
+    if (!userExists) {
+      setRegisteredUsers([...registeredUsers, { username, password }]);
+      alert("Registration successful. Please log in.");
+    } else {
+      alert("Username already exists. Please choose another one.");
+    }
   };
 
   return (
-    <div className="container">
-      <header>
-        <h1>Welcome, {userName}!</h1>
-        <button onClick={logout} className="logout-btn">Log Out</button>
-      </header>
-
-      <div className="main-content">
-        {/* Sidebar: List of Groups */}
-        <aside className="sidebar">
-          <h2>Your Groups</h2>
-          <ul>
-            {groups.map((group, index) => (
-              <li key={index} onClick={() => selectGroup(group)}>
-                {group.groupName}
-              </li>
-            ))}
-          </ul>
-        </aside>
-
-        {/* Main Section: Group Creation and Expense Management */}
-        <section className="content">
-          <div className="group-form">
-            <h2>Create a New Group</h2>
-            <form onSubmit={addGroup}>
-              <div>
-                <label htmlFor="groupName">Group Name:</label>
-                <input
-                  type="text"
-                  id="groupName"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="groupBudget">Group Budget:</label>
-                <input
-                  type="number"
-                  id="groupBudget"
-                  value={groupBudget}
-                  onChange={(e) => setGroupBudget(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="groupNotes">Notes:</label>
-                <textarea
-                  id="groupNotes"
-                  value={groupNotes}
-                  onChange={(e) => setGroupNotes(e.target.value)}
-                />
-              </div>
-              <button type="submit">Add Group</button>
-            </form>
-          </div>
-
-          {/* Expense form for the selected group */}
-          {currentGroup && (
-            <div className="expense-form">
-              <h2>Manage Expenses for {currentGroup.groupName}</h2>
-              <form onSubmit={addExpense}>
-                <div>
-                  <label htmlFor="user">User Name:</label>
-                  <input
-                    type="text"
-                    id="user"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="expenseType">Expense Type:</label>
-                  <input
-                    type="text"
-                    id="expenseType"
-                    value={expenseType}
-                    onChange={(e) => setExpenseType(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="amount">Amount:</label>
-                  <input
-                    type="number"
-                    id="amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    required
-                  />
-                </div>
-                <button type="submit">Add Expense</button>
-              </form>
-
-              {/* Display Expenses */}
-              <div className="expense-list">
-                <h3>Expenses in {currentGroup.groupName}</h3>
-                <ul>
-                  {groupExpenses.map((expense, index) => (
-                    <li key={index}>
-                      {expense.user} added {expense.expenseType} of ${expense.amount.toFixed(2)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </section>
+    <Router>
+      <div className="App">
+        {isAuthenticated ? (
+          <>
+            <nav>
+              <span>Welcome, {loggedInUser}</span>
+              <Link to="/">HomePage</Link>
+              <Link to="/logout">Logout</Link>
+            </nav>
+            <Routes>
+              <Route path="/" element={<HomePage groups={groups} />} />
+              <Route path="/create-group" element={<CreateGroup groups={groups} setGroups={setGroups} />} />
+              <Route path="/add-expense/:groupId" element={<AddExpense groups={groups} setGroups={setGroups} />} />
+              <Route path="/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
+            </Routes>
+          </>
+        ) : (
+          <Routes>
+            <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/register" element={<RegisterPage onRegister={handleRegister} />} />
+          </Routes>
+        )}
       </div>
-    </div>
+    </Router>
   );
-};
+}
 
-export default LandingPage;
+export default App;
